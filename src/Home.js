@@ -1,14 +1,13 @@
 import React from 'react';
+import Flight from './Flight';
+import RadioButton from './RadioButton';
 //import "./index.css";
 export default props => {
-    //const [flights, setResponseData] = React.useState(props.flights);
-    const [launch, setLaunch] = React.useState("Sudheer");
-    const onclickbutton = ()=>{
-        alert("Hi");
+    const [isLaunched, setIsLaunched] = React.useState("No");
+    const launchChangeHandler = (event) => {
+        setIsLaunched(event.target.value);
     }
     return <>
-    <button onClick={onclickbutton}>Click me</button>
-        <input type="button" value="click me" onClick={onclickbutton}/>
         <header>SpacEx Launch Programs</header>
         <div className="row">
         <div className="col-s-12 col-m-2 col-l-2 flight-filter">
@@ -31,8 +30,20 @@ export default props => {
                     </div>
                     <div className="flight-launch">
                         <h5 className="flight-launch-title">Successful Launch</h5>
-                        <button>True</button>
-                        <button>False</button>                  
+                        <RadioButton 
+                        changed={ launchChangeHandler } 
+                        id="1" 
+                        isSelected={ isLaunched === "Yes" } 
+                        label="launched" 
+                        value="Yes" 
+                    />
+                        <RadioButton 
+                        changed={ launchChangeHandler } 
+                        id="1" 
+                        isSelected={ isLaunched === "No" } 
+                        label="launched" 
+                        value="No" 
+                    />               
                     </div>
                     <div className="flight-land">
                         <h5 className="flight-landtitle">Successful Land</h5>
@@ -41,38 +52,8 @@ export default props => {
                     </div>
                 </div>
               <div className="flight-container col-s-12 col-m-10 col-l-10 "> 
-            {props.flights && props.flights.map(flight=>(
-                <div className="flight-detail-container col-s-12 col-m-6 col-l-3">
-                <div key={flight.flight_number} className="row flight">
-                    <picture>
-                        <source srcSet={flight.links.mission_patch_small} media="(max-width: 600px)"></source>
-                        <source srcSet={flight.links.mission_patch} media="(min-width: 600px)"></source>
-                        <source srcSet="flight.jpg"></source>
-                        {/* <img src="img_flowers.jpg" alt="Flowers" style="width:auto;"></img> */}
-                        <img src={flight.links.mission_patch} className="flight-img" alt={flight.mission_name} />
-                    </picture>
-                {/* <img src={flight.links.mission_patch} className="flight-img-" alt={flight.mission_name} /> */}
-                
-                <div className="flight-body">
-                  <h5 className="flight-title">{flight.mission_name} # {flight.flight_number}</h5>
-                  <p className="flight-launch-year">
-                    Mission Ids: {flight.mission_id&&flight.mission_id.map(id=>(
-                        <li>{id}</li>
-                    ))}
-                  </p>
-                  <p className="flight-launch-year">
-                    Launch Year: {flight.launch_year}
-                  </p>
-                  <p className="flight-launch-year">
-                    Successful Launch: {String(flight.launch_success)}
-                  </p>
-                  <p className="flight-launch-year">
-                  Successful Landing: {String(flight.rocket.first_stage.cores[0].land_success)}
-                  </p>
-                </div>
-              </div>
-              </div>
-            ))}
+            {props.flights && props.flights.map(flight=>(<Flight flight={flight}></Flight>))}
+               
             </div>
     </div>
     <footer>Developed by: Sudheer Kumar Tumarada</footer>
